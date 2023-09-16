@@ -66,7 +66,11 @@ app.patch('/categorias/:id', (req, res)=>{
     categoria.codigo = req.body.codigoCategoria,
     categoria.titulo = req.body.tituloCategoria,
     categoria.status = req.body.statusCategoria,
-    categoria.save();
+    categoria.save().then(() => {
+        res.send('categoria atualizada');
+    }).catch((e) => {
+        res.send('Houve um erro: ' + e);
+    });
 })
 
 // Deleta a categoria do id passado
@@ -122,11 +126,11 @@ app.delete('/produtos/:id', (req, res)=>{
 })
 
 app.get('/produtos/:id/estoque', (req, res)=>{
-    res.send('resposta funcionando');
+    res.send(Estoque.findByPk(req.params.id));
 })
 
 app.patch('/produtos/:id/estoque', (req, res)=>{
-    res.send('resposta funcionando');
+    res.send();
 })
 
 app.delete('/produtos/:id/estoque', (req, res)=>{
