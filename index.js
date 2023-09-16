@@ -60,7 +60,14 @@ app.post('/categorias', (req, res)=>{
     });
 })
 
-
+// Usa o Body-parser para os novos ou antigos/mantidos valores e salva com o Sequelize
+app.patch('/categorias/:id', (req, res)=>{
+    const categoria = Categoria.findByPk(req.params.id);
+    categoria.codigo = req.body.codigoCategoria,
+    categoria.titulo = req.body.tituloCategoria,
+    categoria.status = req.body.statusCategoria,
+    categoria.save();
+})
 
 app.delete('/categorias/:id', (req, res)=>{
     res.send('resposta funcionando');
