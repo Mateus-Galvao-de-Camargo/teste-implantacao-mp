@@ -69,8 +69,9 @@ app.patch('/categorias/:id', (req, res)=>{
     categoria.save();
 })
 
+// Deleta a categoria do id passado
 app.delete('/categorias/:id', (req, res)=>{
-    res.send('resposta funcionando');
+    Categoria.destroy({ where: { id: req.params.id }})
 })
 
 app.get('/produtos', (req, res)=>{
