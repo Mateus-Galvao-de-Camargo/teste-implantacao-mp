@@ -74,16 +74,30 @@ app.delete('/categorias/:id', (req, res)=>{
     Categoria.destroy({ where: { id: req.params.id }})
 })
 
+// Procura todos produtos
 app.get('/produtos', (req, res)=>{
     res.send(Produto.findAll());
 })
 
+// Procura um produto
 app.get('/produtos/:id', (req, res)=>{
     res.send(Produto.findByPk(req.params.id));
 })
 
+// Cadastra um novo produto
 app.post('/produtos', (req, res)=>{
-    res.send('resposta funcionando');
+    Produto.create({
+        idCategoria: req.body.idCategoriaProduto,
+        codigo: req.body.codigoProduto,
+        nome: req.body.nomeProduto,
+        descricao: req.body.descricaoProduto,
+        valor: req.body.valorProduto,
+        status: req.body.statusProduto
+    }).then(() => {
+        res.send('produto cadastrado');
+    }).catch((e) => {
+        res.send('Houve um erro: ' + e);
+    });
 })
 
 app.patch('/produtos/:id', (req, res)=>{
