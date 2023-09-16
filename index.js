@@ -127,6 +127,7 @@ app.patch('/produtos/:id', (req, res)=>{
 
 // Deleta um produto e seu estoque
 app.delete('/produtos/:id', (req, res)=>{
+    Estoque.destroy({ where: { idProduto: req.params.id } });
     Produto.destroy({ where: { id: req.params.id } });
 })
 
