@@ -75,11 +75,11 @@ app.delete('/categorias/:id', (req, res)=>{
 })
 
 app.get('/produtos', (req, res)=>{
-    res.send('resposta funcionando');
+    res.send(Produto.findAll());
 })
 
 app.get('/produtos/:id', (req, res)=>{
-    res.send('resposta funcionando');
+    res.send(Produto.findByPk(req.params.id));
 })
 
 app.post('/produtos', (req, res)=>{
