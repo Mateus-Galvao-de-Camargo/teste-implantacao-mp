@@ -86,7 +86,7 @@ app.get('/produtos/:id', (req, res)=>{
 
 // Cadastra um novo produto
 app.post('/produtos', (req, res)=>{
-    Produto.create({
+    const produto = Produto.create({
         idCategoria: req.body.idCategoriaProduto,
         codigo: req.body.codigoProduto,
         nome: req.body.nomeProduto,
@@ -94,9 +94,18 @@ app.post('/produtos', (req, res)=>{
         valor: req.body.valorProduto,
         status: req.body.statusProduto
     }).then(() => {
-        res.send('produto cadastrado');
+        Estoque.create({
+            idProduto: produto.id,
+            quantidade: 0,
+            reserva: 0,
+            status: 0
+        }).then(() => {
+            res.send('produto cadastrado');
+        }).catch((e) => {
+            res.send('Houve um erro ao cadastrar o estoque: ' + e);
+        });
     }).catch((e) => {
-        res.send('Houve um erro: ' + e);
+        res.send('Houve um erro ao cadastrar o produto: ' + e);
     });
 })
 
@@ -116,7 +125,7 @@ app.patch('/produtos/:id', (req, res)=>{
     });
 })
 
-// Deleta um produto
+// Deleta um produto e seu estoque
 app.delete('/produtos/:id', (req, res)=>{
     Produto.destroy({ where: { id: req.params.id } });
 })
