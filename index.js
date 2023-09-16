@@ -101,7 +101,18 @@ app.post('/produtos', (req, res)=>{
 })
 
 app.patch('/produtos/:id', (req, res)=>{
-    res.send('resposta funcionando');
+    const produto = Produto.findByPk(req.params.id);
+    produto.idCategoria = req.body.idCategoriaProduto;
+    produto.codigo = req.body.codigoProduto;
+    produto.nome = req.body.nomeProduto;
+    produto.descricao = req.body.descricaoProduto;
+    produto.valor = req.body.valorProduto;
+    produto.status = req.body.statusProduto;
+    produto.save().then(() => {
+        res.send('produto atualizado');
+    }).catch((e) => {
+        res.send('Houve um erro: ' + e);
+    });
 })
 
 app.delete('/produtos/:id', (req, res)=>{
