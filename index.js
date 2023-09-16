@@ -100,6 +100,7 @@ app.post('/produtos', (req, res)=>{
     });
 })
 
+// Atualiza um produto
 app.patch('/produtos/:id', (req, res)=>{
     const produto = Produto.findByPk(req.params.id);
     produto.idCategoria = req.body.idCategoriaProduto;
@@ -115,8 +116,9 @@ app.patch('/produtos/:id', (req, res)=>{
     });
 })
 
+// Deleta um produto
 app.delete('/produtos/:id', (req, res)=>{
-    res.send('resposta funcionando');
+    Produto.destroy({ where: { id: req.params.id } });
 })
 
 app.get('/produtos/:id/estoque', (req, res)=>{
