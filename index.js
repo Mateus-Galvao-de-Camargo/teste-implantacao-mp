@@ -37,34 +37,30 @@ async function criarBanco() {
         return database.sync();
     });
 
-app.get('/', (req, res)=>{
-    res.sendFile(__dirname+'/views/menu.html');
-})
-
+// Envia a informação de todas as categorias no banco
 app.get('/categorias', (req, res)=>{
-    res.sendFile(__dirname+'/views/addCategoria.html');
+    res.send(Categoria.findAll());
 })
 
+// Envia a informação de uma categoria com o id fornecido
 app.get('/categorias/:id', (req, res)=>{
-    res.send('resposta funcionando');
+    res.send(Categoria.findByPk(req.params.id));
 })
 
-// Cadastra uma categoria
+// Cadastra uma categoria usando o body-parser para direcionar as informações do formulário
 app.post('/categorias', (req, res)=>{
     Categoria.create({
         codigo: req.body.codigoCategoria,
         titulo: req.body.tituloCategoria,
         status: req.body.statusCategoria
     }).then(() => {
-        res.send('deu boa');
+        res.send('categoria cadastrada');
     }).catch((e) => {
         res.send('Houve um erro: ' + e);
     });
 })
 
-app.patch('/categorias/:id', (req, res)=>{
-    res.send('resposta funcionando');
-})
+
 
 app.delete('/categorias/:id', (req, res)=>{
     res.send('resposta funcionando');
