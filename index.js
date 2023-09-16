@@ -3,13 +3,9 @@ const app = express();
 const mysql2 = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const database = require('./db');
-const ejs = require('ejs');
 const Categoria = require('./models/categoria');
 const Produto = require('./models/produto');
 const Estoque = require('./models/estoque');
-
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -40,12 +36,12 @@ async function criarBanco() {
 // Envia a informação de todas as categorias no banco
 app.get('/categorias', (req, res)=>{
     res.send(Categoria.findAll());
-})
+});
 
 // Envia a informação de uma categoria com o id fornecido
 app.get('/categorias/:id', (req, res)=>{
     res.send(Categoria.findByPk(req.params.id));
-})
+});
 
 // Cadastra uma categoria usando o body-parser para direcionar as informações do formulário
 app.post('/categorias', (req, res)=>{
@@ -58,7 +54,7 @@ app.post('/categorias', (req, res)=>{
     }).catch((e) => {
         res.send('Houve um erro: ' + e);
     });
-})
+});
 
 // Usa o Body-parser para os novos ou antigos/mantidos valores e salva com o Sequelize
 app.patch('/categorias/:id', (req, res)=>{
@@ -71,22 +67,22 @@ app.patch('/categorias/:id', (req, res)=>{
     }).catch((e) => {
         res.send('Houve um erro: ' + e);
     });
-})
+});
 
 // Deleta a categoria do id passado
 app.delete('/categorias/:id', (req, res)=>{
     Categoria.destroy({ where: { id: req.params.id }})
-})
+});
 
 // Procura todos produtos
 app.get('/produtos', (req, res)=>{
     res.send(Produto.findAll());
-})
+});
 
 // Procura um produto
 app.get('/produtos/:id', (req, res)=>{
     res.send(Produto.findByPk(req.params.id));
-})
+});
 
 // Cadastra um novo produto
 app.post('/produtos', (req, res)=>{
@@ -102,7 +98,7 @@ app.post('/produtos', (req, res)=>{
     }).catch((e) => {
         res.send('Houve um erro: ' + e);
     });
-})
+});
 
 // Atualiza um produto
 app.patch('/produtos/:id', (req, res)=>{
@@ -118,28 +114,28 @@ app.patch('/produtos/:id', (req, res)=>{
     }).catch((e) => {
         res.send('Houve um erro: ' + e);
     });
-})
+});
 
 // Deleta um produto
 app.delete('/produtos/:id', (req, res)=>{
     Produto.destroy({ where: { id: req.params.id } });
-})
+});
 
 app.get('/produtos/:id/estoque', (req, res)=>{
     res.send(Estoque.findByPk(req.params.id));
-})
+});
 
 app.patch('/produtos/:id/estoque', (req, res)=>{
     const estoque = Estoque.findByPk(req.params.id);
     estoque.quantidade = req.body.quantidadeEstoque;
     estoque.reserva = req.body.reservaEstoque;
     estoque.status = req.body.statusEstoque;
-})
+});
 
 app.delete('/produtos/:id/estoque', (req, res)=>{
-    res.send('resposta funcionando');
-})
+    res.send('[501] - Not Implemented.');
+});
 
 app.listen(8081, ()=>{
     console.log('Servidor funcionando.');
-})
+});
