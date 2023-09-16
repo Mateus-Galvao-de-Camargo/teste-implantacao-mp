@@ -130,7 +130,10 @@ app.get('/produtos/:id/estoque', (req, res)=>{
 })
 
 app.patch('/produtos/:id/estoque', (req, res)=>{
-    res.send();
+    const estoque = Estoque.findByPk(req.params.id);
+    estoque.quantidade = req.body.quantidadeEstoque;
+    estoque.reserva = req.body.reservaEstoque;
+    estoque.status = req.body.statusEstoque;
 })
 
 app.delete('/produtos/:id/estoque', (req, res)=>{
